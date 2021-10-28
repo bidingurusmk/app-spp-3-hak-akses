@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\siswaController;
 use App\Http\Controllers\kelolaKelas;
+use App\Http\Controllers\kelolaSiswa;
+use App\Http\Controllers\spp;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,14 @@ Route::group(['middleware'=>['jwt.verify:admin']],function(){
 	Route::post('/insertkelas',[kelolaKelas::class,'store']);
 	Route::put('/updatekelas/{id}',[kelolaKelas::class,'update']);
 	Route::delete('/deletekelas/{id}',[kelolaKelas::class,'delete']);
+
+	Route::post('/insertsiswa',[kelolaSiswa::class,'store']);
+	Route::put('/updatesiswa/{id}',[kelolaSiswa::class,'update']);
+	Route::delete('/deletesiswa/{id}',[kelolaSiswa::class,'delete']);
+
+	Route::post('/insertspp',[spp::class,'store']);
+	Route::put('/updatespp/{id}',[spp::class,'update']);
+	Route::delete('/deletespp/{id}',[spp::class,'delete']);
 });
 
 Route::group(['middleware'=>['jwt.verifysiswa']],function(){
