@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2021 at 08:41 AM
+-- Generation Time: Nov 10, 2021 at 05:26 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -115,6 +115,16 @@ CREATE TABLE `pembayaran` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`id_pembayaran`, `id_petugas`, `nisn`, `tgl_bayar`, `bulan_spp`, `tahun_spp`, `created_at`, `updated_at`) VALUES
+(3, 9, 1234, '2021-11-10', 1, 2019, '2021-11-10 09:00:31', '2021-11-10 09:00:31'),
+(4, 9, 1234, '2021-11-10', 1, 2019, '2021-11-10 09:02:10', '2021-11-10 09:02:10'),
+(5, 9, 1234, '2021-11-10', 1, 2019, '2021-11-10 09:12:28', '2021-11-10 09:12:28'),
+(6, 9, 1234, '2021-11-10', 2, 2019, '2021-11-10 09:24:31', '2021-11-10 09:24:31');
+
 -- --------------------------------------------------------
 
 --
@@ -183,7 +193,8 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`nisn`, `nis`, `nama`, `id_kelas`, `alamat`, `no_telp`, `username`, `password`, `created_at`, `updated_at`) VALUES
-(123, '123', 'sugeng', 2, 'surabaya', '098888888', 'sugeng', '$2y$10$SuOBV4.Y08CCdAln.urvKOPWduhzzPFlOswH/ZreM/GVOlCjCUY9q', '2021-10-26 23:37:36', '2021-10-26 23:37:36');
+(1232, '1232', 'sugeng', 2, 'surabaya', '098888888', 'sugeng', '$2y$10$aH8uAXfP3/NXHgHSFoZ0p.AEkmbea9BH7avGcACPRmqGs5g1/QFXC', '2021-10-27 23:56:39', '2021-10-27 23:56:39'),
+(1234, '1234', 'iwan false', 2, 'jakarta', '098888888', 'iwan', '$2y$10$KIz6EGX72EwN9IZWSegwzOzS7nLNXKpFQ.wi.AmBT8gL1kcVYLeKq', '2021-10-27 23:57:17', '2021-10-27 23:57:17');
 
 -- --------------------------------------------------------
 
@@ -199,6 +210,38 @@ CREATE TABLE `spp` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `spp`
+--
+
+INSERT INTO `spp` (`id_spp`, `angkatan`, `tahun`, `nominal`, `created_at`, `updated_at`) VALUES
+(1, 2019, 2021, 200000, '2021-10-28 00:07:47', '2021-10-28 00:07:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tunggakan`
+--
+
+CREATE TABLE `tunggakan` (
+  `id_tunggakan` int(11) NOT NULL,
+  `nisn` int(11) NOT NULL,
+  `bulan_spp` int(11) NOT NULL,
+  `tahun_spp` int(11) NOT NULL,
+  `status_lunas` enum('Lunas','Belum Lunas') NOT NULL DEFAULT 'Belum Lunas',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tunggakan`
+--
+
+INSERT INTO `tunggakan` (`id_tunggakan`, `nisn`, `bulan_spp`, `tahun_spp`, `status_lunas`, `created_at`, `updated_at`) VALUES
+(1, 1234, 1, 2019, 'Lunas', '2021-11-10 16:02:04', '2021-11-10 09:12:28'),
+(2, 1234, 2, 2019, 'Lunas', '2021-11-10 16:02:04', '2021-11-10 09:24:31'),
+(3, 1234, 3, 2019, 'Belum Lunas', '2021-11-10 16:02:04', '2021-11-10 09:02:10');
 
 --
 -- Indexes for dumped tables
@@ -265,6 +308,13 @@ ALTER TABLE `spp`
   ADD PRIMARY KEY (`id_spp`);
 
 --
+-- Indexes for table `tunggakan`
+--
+ALTER TABLE `tunggakan`
+  ADD PRIMARY KEY (`id_tunggakan`),
+  ADD KEY `nisn` (`nisn`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -290,7 +340,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -308,7 +358,13 @@ ALTER TABLE `petugas`
 -- AUTO_INCREMENT for table `spp`
 --
 ALTER TABLE `spp`
-  MODIFY `id_spp` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_spp` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tunggakan`
+--
+ALTER TABLE `tunggakan`
+  MODIFY `id_tunggakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -326,6 +382,12 @@ ALTER TABLE `pembayaran`
 --
 ALTER TABLE `siswa`
   ADD CONSTRAINT `siswa_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`);
+
+--
+-- Constraints for table `tunggakan`
+--
+ALTER TABLE `tunggakan`
+  ADD CONSTRAINT `tunggakan_ibfk_1` FOREIGN KEY (`nisn`) REFERENCES `siswa` (`nisn`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

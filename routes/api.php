@@ -7,6 +7,7 @@ use App\Http\Controllers\siswaController;
 use App\Http\Controllers\kelolaKelas;
 use App\Http\Controllers\kelolaSiswa;
 use App\Http\Controllers\spp;
+use App\Http\Controllers\transaksi;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ Route::post('login_siswa', [siswaController::class,'login']);
 
 Route::group(['middleware'=>['jwt.verify:petugas']],function(){
 	Route::get('/get_profile',[UserController::class,'getprofile']);
+	Route::post('/pembayaran',[transaksi::class,'store']);
+	Route::get('/kurang_bayar/{id}',[transaksi::class,'kurang_bayar']);
+	
 });
 
 Route::group(['middleware'=>['jwt.verify:admin']],function(){
