@@ -32,7 +32,7 @@ Route::group(['middleware'=>['jwt.verify:petugas']],function(){
 	Route::get('/get_profile',[UserController::class,'getprofile']);
 	Route::post('/pembayaran',[transaksi::class,'store']);
 	Route::get('/kurang_bayar/{id}',[transaksi::class,'kurang_bayar']);
-	
+	Route::get('/getsiswabynisn/{id}',[transaksi::class,'getSiswaByNisn']);
 });
 
 Route::group(['middleware'=>['jwt.verify:admin']],function(){
