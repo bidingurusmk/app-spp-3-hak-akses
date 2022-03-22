@@ -33,6 +33,8 @@ Route::group(['middleware'=>['jwt.verify:petugas']],function(){
 	Route::post('/pembayaran',[transaksi::class,'store']);
 	Route::get('/kurang_bayar/{id}',[transaksi::class,'kurang_bayar']);
 	Route::get('/getsiswabynisn/{id}',[transaksi::class,'getSiswaByNisn']);
+	Route::get('/gethistori_petugas',[transaksi::class,'gethistori']);
+	
 });
 
 Route::group(['middleware'=>['jwt.verify:admin']],function(){
@@ -48,10 +50,14 @@ Route::group(['middleware'=>['jwt.verify:admin']],function(){
 	Route::post('/insertspp',[spp::class,'store']);
 	Route::put('/updatespp/{id}',[spp::class,'update']);
 	Route::delete('/deletespp/{id}',[spp::class,'delete']);
+
+	Route::get('/gethistori_admin',[transaksi::class,'gethistori']);
 });
 
 Route::group(['middleware'=>['jwt.verifysiswa']],function(){
 	Route::get('/get_profile_siswa',[siswaController::class,'getprofile']);
+	Route::get('/gethistori',[siswaController::class,'gethistori']);
+	Route::get('/getkurangbayar',[siswaController::class,'getkurangbayar']);
 });
 
 

@@ -9,6 +9,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Config;
 use Auth;
+use App\Models\tunggakanModel;
 
 class siswaController extends Controller
 {
@@ -31,7 +32,8 @@ class siswaController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        return response()->json(compact('token'));
+        $datauser=JWTAuth::user();
+        return response()->json(compact('token','datauser'));
     }
 
    
@@ -82,6 +84,18 @@ class siswaController extends Controller
     public function getprofile()
     {
     	return response()->json(['data'=>JWTAuth::user()]);
+    }
+    public function gethistori()
+    {
+        $histori=tunggakanModel::join('siswa','siswa.nisn','tunggakan.nisn')->where('tunggakan.nisn',JWTAuth::user()->nisn)->where('status_lunas','Lunas')->get();
+        return response()->json($histori);
+    }
+    public function getkurangbayar()
+    {
+        $daftarbelumbayar=tunggakanModel::join('siswa','siswa.nisn','tunggakan.nisn')->join('kelas','kelas.id_kelas','siswa.id_kelas')->join('spp','spp.angkatan','kelas.angkatan')->where('tunggakan.nisn',JWTAuth::user()->nisn)->where('status_lunas','Belum Lunas')->get();
+
+        $kurangbayar=tunggakanModel::join('siswa','siswa.nisn','tunggakan.nisn')->join('kelas','kelas.id_kelas','siswa.id_kelas')->join('spp','spp.angkatan','kelas.angkatan')->where('tunggakan.nisn',JWTAuth::user()->nisn)->where('status_lunas','Belum Lunas')->sum('spp.nominal');
+        return response()->json(compact('daftarbelumbayar','kurangbayar'));
     }
 }
 

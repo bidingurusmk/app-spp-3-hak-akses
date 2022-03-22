@@ -85,4 +85,9 @@ class transaksi extends Controller
         }
         return response()->json($dt_siswa);
     }
+    public function gethistori()
+    {
+        $histori=tunggakanModel::join('siswa','siswa.nisn','tunggakan.nisn')->join('kelas','kelas.id_kelas','siswa.id_kelas')->join('spp','spp.angkatan','kelas.angkatan')->where('status_lunas','Lunas')->get();
+        return response()->json($histori);
+    }
 }
